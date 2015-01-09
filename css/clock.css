@@ -1,0 +1,16 @@
+body {
+	text-align: center;
+	background-color: #9EA0AB;
+	font-family: sans-serif;
+}
+
+.clockText {
+	font-size: 28px;
+	color: #96CAFF;
+}
+
+#clock {
+	font-size: 90px;
+	font-family: sans-serif;
+	color: #BFE9FF;
+}
