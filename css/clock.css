@@ -4,7 +4,7 @@ body {
 	font-family: sans-serif;
 }
 
-.clockText {
+.clockText	{
 	font-size: 28px;
 	color: #96CAFF;
 }
@@ -13,4 +13,30 @@ body {
 	font-size: 90px;
 	font-family: sans-serif;
 	color: #BFE9FF;
+}
+
+#forecastLabel {
+	font-size: 45px;
+	font-family: sans-serif;
+	color: #BFE9FF;
+}
+
+.cold {
+	background-color: #95A5A6;
+}
+
+.chilly {
+	background-color: #1ABC9C;
+}
+
+.nice {
+	background-color: #2980B9;
+}
+
+.warm {
+	background-color: #E67E22;
+}
+
+.hot {
+	background-color: #E74C3C;
 }
