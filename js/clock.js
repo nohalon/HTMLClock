@@ -1,5 +1,6 @@
 
 var x = setInterval(function(){getTime()}, 1000)
+var userId = "";
 
 function getTime()
 {
@@ -51,9 +52,9 @@ function hideAlarmPopup() {
 	$("#popup").addClass("hide");
 }
 
-function insertAlarm(hours, minutes, ampm, alarmName) {
+function insertAlarm(hours, minutes, ampm, alarmName, alarmId) {
 	var time = hours.concat(":").concat(minutes).concat(" ").concat(ampm);
-	insertStoredAlarm(time, alarmName);
+	insertStoredAlarm(time, alarmName, alarmId);
 }
 
 function insertStoredAlarm(time, alarmName, alarmId) {
@@ -79,18 +80,20 @@ function addAlarm() {
 
 	var AlarmObject = Parse.Object.extend("Alarm");
     var alarmObject = new AlarmObject();
-      alarmObject.save({"time": time,"alarmName": alarmName}, {
+      alarmObject.save({"time": time, "alarmName": alarmName, "userId" : userId}, {
       success: function(object) {
-        insertAlarm(hours, minutes, ampm, alarmName);
+        insertAlarm(hours, minutes, ampm, alarmName, object.id);
 		hideAlarmPopup();
       }
     });
 }
 
-function getAllAlarms() {
+function getAllAlarms(localUserId) {
 	Parse.initialize("eKjTEoY8WADoVRMKGZgPkRaosUEsGt3tm43IKjwD", "UI42VgHKdK81nOyyJk1TQUgcmbZUGGXvIm3dnEdn");
 	var AlarmObject = Parse.Object.extend("Alarm");
     var query = new Parse.Query(AlarmObject);
+
+    query.equalTo("userId", localUserId);
     query.find({
         success: function(results) {
           for (var i = 0; i < results.length; i++) { 
@@ -132,17 +135,25 @@ function deleteAlarms() {
 }
 
 function signinCallback(authResult) {
-	console.log("Clicked once");
-  if (authResult['status']['signed_in']) {
-    // Update the app to reflect a signed in user
-    // Hide the sign-in button now that the user is authorized, for example:
-    document.getElementById('signinButton').setAttribute('style', 'display: none');
-  } else {
-    // Update the app to reflect a signed out user
-    // Possible error values:
-    //   "user_signed_out" - User is signed-out
-    //   "access_denied" - User denied access to your app
-    //   "immediate_failed" - Could not automatically log in the user
-    console.log('Sign-in state: ' + authResult['error']);
-  }
+	var userName = "";
+    if (authResult['status']['signed_in']) {
+    	// Get the users information
+		gapi.client.load('plus','v1', function() {
+			var request = gapi.client.plus.people.get({
+			   'userId': 'me'
+			});
+			request.execute(function(resp) {
+			   userName = resp.displayName;
+			   userId = resp.result.id;
+			   // Show the users id
+			   getAllAlarms(userId);
+			   $('.clockText').html(userName + "'s Clock and Alarms");
+			});
+		});
+    	document.getElementById('signinButton').setAttribute('style', 'display: none');
+    } else {
+    	
+	    document.getElementById('signinButton').setAttribute('style', 'display: inline');
+	    console.log('Sign-in state: ' + authResult['error']);
+    }
 }
