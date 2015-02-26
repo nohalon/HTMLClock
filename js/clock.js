@@ -84,6 +84,9 @@ function addAlarm() {
       success: function(object) {
         insertAlarm(hours, minutes, ampm, alarmName, object.id);
 		hideAlarmPopup();
+
+		// Google analytics
+		ga('send', 'event', 'Alarm', 'Add');
       }
     });
 }
@@ -130,6 +133,9 @@ function deleteAlarms() {
 		   			console.log("Error getting " + object + " " + error);
 	  			}
 			});
+
+			// Google Analytics
+			ga('send', 'event', 'Alarm', 'Delete');
 		}
 	}
 }
