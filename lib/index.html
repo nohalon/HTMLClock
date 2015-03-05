@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <title>Imgur OAuth</title>
+   </head>
+   <body>
+      <button onclick="login();">Login with Imgur</button>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+      <script src="oauth.js?1"></script>
+      <script type="text/javascript">
+      init({client_id: "0196b29cd0a9f50", type: "token", callback_function: test});
+      </script>
+   </body>
+</html>
